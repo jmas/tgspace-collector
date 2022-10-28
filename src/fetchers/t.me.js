@@ -24,7 +24,10 @@ module.exports = async (target, { getDomByUrl }) => {
     );
     const title =
       item.querySelector(".js-message_text > b:first-child")?.textContent ||
-      truncate(description, 10, { byWords: true, stripTags: true });
+      truncate(item.querySelector(".js-message_text").innerHTML, 10, {
+        byWords: true,
+        stripTags: true,
+      });
     const images = Array.from(
       item.querySelectorAll(".tgme_widget_message_photo_wrap") || []
     ).map((item) => item.style.backgroundImage);
