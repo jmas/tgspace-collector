@@ -22,6 +22,8 @@ jobs:
           commit_message: Update Feeds
           branch: gh-pages
           file_pattern: "feeds/*.xml"
+          push_options: "--force"
+          skip_checkout: true
           commit_user_name: github-tgspace-collector-actions[bot]
           commit_user_email: jmas.ukraine+tgspace-collector@gmail.com
           commit_author: Oleksandr Maslakov <tgspace-collector@gmail.com>
