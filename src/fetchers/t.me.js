@@ -6,12 +6,11 @@ const unwrapImage = (image) => {
 };
 
 module.exports = async (target, { getDomByUrl }) => {
-  // const _url = URL.parse(target.url);
-  // const targetUrl = `${_url.protocol}//${_url.host}/s${_url.pathname}`;
-
   const { window } = await getDomByUrl(target.url);
 
-  return Array.from(
+  const title = window.document.querySelector("title").textContent;
+
+  const items = Array.from(
     window.document.querySelectorAll(
       ".js-message_history > .js-widget_message_wrap"
     )
@@ -48,4 +47,6 @@ module.exports = async (target, { getDomByUrl }) => {
       ),
     };
   });
+
+  return { title, items };
 };

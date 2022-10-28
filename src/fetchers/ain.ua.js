@@ -2,8 +2,9 @@ module.exports = async (target, { getDomByUrl, dateFns }) => {
   const targetUrl = target.url;
   const { window } = await getDomByUrl(targetUrl);
 
-  const result = [];
+  const items = [];
 
+  const title = window.document.querySelector("title").textContent;
   const articles = window.document.querySelectorAll(`.block-posts .post-item`);
 
   articles.forEach((article) => {
@@ -17,6 +18,7 @@ module.exports = async (target, { getDomByUrl, dateFns }) => {
         ? dateFns.parse(`${year}-${month}-${day}`, "yyyy-MM-dd", new Date())
         : null;
     let time = new Date();
+    const important = anchor.classList.contains("item-title-bold");
 
     if (dateOrTime.match(/\d\d:\d\d/)) {
       time = dateFns.parse(
@@ -27,17 +29,19 @@ module.exports = async (target, { getDomByUrl, dateFns }) => {
     }
 
     if (date) {
-      result.push({
+      items.push({
         title,
         url: `${anchor.href}`,
         date: `${dateFns.format(date, "yyyy-MM-dd")} ${dateFns.format(
           time,
           "HH:mm"
         )}`,
-        // important: anchor.classList.contains("item-title-bold"),
+        custom_elements: [].concat(
+          important ? [{ "tgspace:important": true }] : []
+        ),
       });
     }
   });
 
-  return result;
+  return { title, items };
 };

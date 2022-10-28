@@ -36,6 +36,47 @@ const cleanupTitle = (title) => {
   return title.replace(/\s\s+/g, " ");
 };
 
+const getTtlProposal = (dates) => {
+  const currentDate = new Date();
+  const _dates = dates
+    .filter(
+      (date) =>
+        currentDate.getFullYear() === date.getFullYear() &&
+        currentDate.getMonth() === date.getMonth() &&
+        currentDate.getDate() === date.getDate()
+    )
+    .sort((a, b) => a - b);
+
+  if (_dates.length < 2) {
+    return { minDistance: 24 * 60, avgDistance: 24 * 60 };
+  }
+
+  let minInterval = [_dates[0], _dates[1]];
+  const distances = [];
+
+  for (let i = 0; i < _dates.length - 1; i++) {
+    const currentInterval = [_dates[i], _dates[i + 1]];
+    const currentDistance =
+      currentInterval[1].getTime() - currentInterval[0].getTime();
+    const minDistance = minInterval[1].getTime() - minInterval[0].getTime();
+
+    distances.push(currentDistance);
+
+    if (currentDistance > 0 && currentDistance < minDistance) {
+      minInterval = currentInterval;
+    }
+  }
+
+  const minDistance = Math.ceil(
+    (minInterval[1].getTime() - minInterval[0].getTime()) / 60000
+  );
+  const avgDistance = Math.ceil(
+    distances.reduce((sum, item) => sum + item, 0) / distances.length / 60000
+  );
+
+  return { minDistance, avgDistance };
+};
+
 const tools = {
   getDomByHtml,
   getHtmlByUrl,
@@ -88,13 +129,20 @@ module.exports = async () => {
         url,
       };
 
-      const feed = new RSS({
-        title: fetcherName,
-        custom_elements: [{ "tgspace:performance": "" }],
-      });
-
       // Fetch items
-      const items = await fetcher(target, tools);
+      const { title, items } = await fetcher(target, tools);
+
+      const { minDistance } = getTtlProposal(
+        items.map((item) => new Date(item.date))
+      );
+
+      const ttl = minDistance < 5 ? 5 : minDistance;
+
+      const feed = new RSS({
+        title,
+        pubDate: new Date(),
+        ttl,
+      });
 
       // Add items to feed
       items.forEach((item) => feed.item(item));

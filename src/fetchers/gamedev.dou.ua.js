@@ -4,8 +4,9 @@ module.exports = async (target, { getDomByUrl, dateFns }) => {
   const targetUrl = target.url;
   const { window } = await getDomByUrl(targetUrl);
 
-  const result = [];
+  const items = [];
 
+  const title = window.document.querySelector("title").textContent;
   const articles = window.document.querySelectorAll(".b-lenta .b-postcard");
 
   articles.forEach((article) => {
@@ -28,7 +29,7 @@ module.exports = async (target, { getDomByUrl, dateFns }) => {
       }
     );
 
-    result.push({
+    items.push({
       title,
       url: `${anchor.href}`,
       date: `${dateFns.format(_date, "yyyy-MM-dd")} ${dateFns.format(
@@ -38,5 +39,5 @@ module.exports = async (target, { getDomByUrl, dateFns }) => {
     });
   });
 
-  return result;
+  return { title, items };
 };

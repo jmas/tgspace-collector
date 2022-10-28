@@ -2,10 +2,12 @@ module.exports = async (target, { getDomByUrl, dateFns, URL }) => {
   const targetUrl = target.url;
   const { window } = await getDomByUrl(targetUrl);
 
+  const title = window.document.querySelector("title").textContent;
+
   const targetUrlParsed = URL.parse(targetUrl);
   const baseUrl = `${targetUrlParsed.protocol}//${targetUrlParsed.host}`;
 
-  const result = [];
+  const items = [];
 
   const articles = window.document.querySelectorAll(
     ".news_list .news_block_item"
@@ -15,17 +17,20 @@ module.exports = async (target, { getDomByUrl, dateFns, URL }) => {
     const anchor = article.querySelector("a");
     const time = article.dataset.type;
     const title = anchor.textContent.trim();
+    const important = anchor.classList.contains("bold");
 
     if (time) {
-      result.push({
+      items.push({
         title,
         url: `${baseUrl}${anchor.href}`,
         date: dateFns.format(new Date(), "yyyy-MM-dd"),
         time: time.trim(),
-        important: anchor.classList.contains("bold"),
+        custom_elements: [].concat(
+          important ? [{ "tgspace:important": true }] : []
+        ),
       });
     }
   });
 
-  return result;
+  return { title, items };
 };

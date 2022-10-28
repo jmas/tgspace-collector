@@ -12,10 +12,12 @@ module.exports = async (
     )
   );
 
+  const title = window.document.querySelector("title").textContent;
+
   const targetUrlParsed = URL.parse(targetUrl);
   const baseUrl = `${targetUrlParsed.protocol}//${targetUrlParsed.host}`;
 
-  const result = [];
+  const items = [];
 
   Array.from(window.document.querySelectorAll(".news > *")).forEach((child) => {
     if (
@@ -28,7 +30,7 @@ module.exports = async (
         .replace(/^https:\/\/.+\.(epravda|pravda|eurointegration)\.com\.ua/, "")
         .split("/");
 
-      result.push({
+      items.push({
         title: (
           anchor.querySelector("[data-vr-headline]") || anchor
         ).textContent.trim(),
@@ -38,9 +40,12 @@ module.exports = async (
         date: `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")} ${
           child.querySelector(".article__time")?.textContent.trim() || ""
         }`.trim(),
+        custom_elements: [].concat(
+          important ? [{ "tgspace:important": true }] : []
+        ),
       });
     }
   });
 
-  return result;
+  return { title, items };
 };
