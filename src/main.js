@@ -10,6 +10,8 @@ const RSS = require("rss-generator");
 
 const { JSDOM } = jsdom;
 
+const targetDir = process.env.TARGET_DIR || "build";
+
 const getDomByHtml = (html) => {
   const virtualConsole = new jsdom.VirtualConsole();
   return new JSDOM(html, { virtualConsole });
@@ -103,9 +105,14 @@ module.exports = async () => {
         console.log(`[${fetcherName}] Debug result: `, items);
       }
 
+      // Create target dir
+      if (!fs.existsSync(path.join(".", targetDir))) {
+        fs.mkdirSync(path.join(".", targetDir));
+      }
+
       // Write feed to disk
       fs.writeFileSync(
-        path.join(".", "build", `${fetcherName}.xml`),
+        path.join(".", targetDir, `${fetcherName}.xml`),
         feed.xml({ indent: true }),
         {
           encoding: "utf-8",
