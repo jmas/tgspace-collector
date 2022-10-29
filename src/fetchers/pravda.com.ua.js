@@ -47,7 +47,6 @@ module.exports = async (
           new Date(
             new Date().toLocaleString("en-US", {
               timeZone: "Europe/Kiev",
-              timeZoneName: "short",
             })
           )
         ),

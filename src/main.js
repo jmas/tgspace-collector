@@ -148,7 +148,11 @@ module.exports = async () => {
         title,
         generator: "TG Space",
         site_url: "https://tgspace.org",
-        pubDate: new Date(),
+        pubDate: new Date(
+          new Date().toLocaleString("en-US", {
+            timeZone: "Europe/Kiev",
+          })
+        ),
         custom_namespaces: {
           tgspace: `${baseUrl}/tgspace.dtd`,
         },
@@ -197,7 +201,11 @@ module.exports = async () => {
 
   const header = {
     title: "TG Space Feeds",
-    dateCreated: new Date(),
+    dateCreated: new Date(
+      new Date().toLocaleString("en-US", {
+        timeZone: "Europe/Kiev",
+      })
+    ),
     ownerName: "jmas",
   };
 

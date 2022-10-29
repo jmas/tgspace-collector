@@ -21,7 +21,6 @@ module.exports = async (target, { getDomByUrl, dateFns }) => {
             new Date(
               new Date().toLocaleString("en-US", {
                 timeZone: "Europe/Kiev",
-                timeZoneName: "short",
               })
             )
           )
@@ -29,7 +28,6 @@ module.exports = async (target, { getDomByUrl, dateFns }) => {
     let time = new Date(
       new Date().toLocaleString("en-US", {
         timeZone: "Europe/Kiev",
-        timeZoneName: "short",
       })
     );
     const important = anchor.classList.contains("item-title-bold");
@@ -41,7 +39,6 @@ module.exports = async (target, { getDomByUrl, dateFns }) => {
         new Date(
           new Date().toLocaleString("en-US", {
             timeZone: "Europe/Kiev",
-            timeZoneName: "short",
           })
         )
       );

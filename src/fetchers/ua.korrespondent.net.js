@@ -24,7 +24,6 @@ module.exports = async (target, { getDomByUrl, dateFns }) => {
           new Date(
             new Date().toLocaleString("en-US", {
               timeZone: "Europe/Kiev",
-              timeZoneName: "short",
             })
           ),
           "yyyy-MM-dd"
@@ -33,7 +32,6 @@ module.exports = async (target, { getDomByUrl, dateFns }) => {
         new Date(
           new Date().toLocaleString("en-US", {
             timeZone: "Europe/Kiev",
-            timeZoneName: "short",
           })
         )
       ),
