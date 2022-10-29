@@ -140,6 +140,8 @@ module.exports = async () => {
 
       const feed = new RSS({
         title,
+        generator: "TG Space",
+        site_url: "https://tgspace.org",
         pubDate: new Date(),
         ttl,
       });
