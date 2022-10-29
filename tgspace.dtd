@@ -1,0 +1,3 @@
+<!DOCTYPE image [
+<!ELEMENT image (#PCDATA)>
+]>
