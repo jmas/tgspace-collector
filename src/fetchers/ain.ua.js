@@ -15,16 +15,35 @@ module.exports = async (target, { getDomByUrl, dateFns }) => {
       anchor.href.match(/https:\/\/ain\.ua\/(\d+)\/(\d+)\/(\d+)\//) || [];
     let date =
       year && month && day
-        ? dateFns.parse(`${year}-${month}-${day}`, "yyyy-MM-dd", new Date())
+        ? dateFns.parse(
+            `${year}-${month}-${day}`,
+            "yyyy-MM-dd",
+            new Date(
+              new Date().toLocaleString("en-US", {
+                timeZone: "Europe/Kiev",
+                timeZoneName: "short",
+              })
+            )
+          )
         : null;
-    let time = new Date();
+    let time = new Date(
+      new Date().toLocaleString("en-US", {
+        timeZone: "Europe/Kiev",
+        timeZoneName: "short",
+      })
+    );
     const important = anchor.classList.contains("item-title-bold");
 
     if (dateOrTime.match(/\d\d:\d\d/)) {
       time = dateFns.parse(
         dateOrTime.trim().padStart(5, "0"),
         "HH:mm",
-        new Date()
+        new Date(
+          new Date().toLocaleString("en-US", {
+            timeZone: "Europe/Kiev",
+            timeZoneName: "short",
+          })
+        )
       );
     }
 

@@ -99,6 +99,7 @@ module.exports = async () => {
     "https://pravda.com.ua",
     "https://epravda.com.ua",
     "https://ain.ua",
+    "https://zn.ua",
     "https://gamedev.dou.ua/news/",
     "https://ua.korrespondent.net",
     "https://t.me/s/novinach",

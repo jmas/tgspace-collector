@@ -1,6 +1,6 @@
 module.exports = async (
   target,
-  { getDomByHtml, getHtmlByUrl, convEncoding, URL }
+  { getDomByHtml, getHtmlByUrl, convEncoding, URL, dateFns }
 ) => {
   const targetUrl = target.url;
 
@@ -37,9 +37,18 @@ module.exports = async (
         url: anchor.href.startsWith("http")
           ? anchor.href
           : `${baseUrl}${anchor.href}`,
-        date: `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")} ${
-          child.querySelector(".article__time")?.textContent.trim() || ""
-        }`.trim(),
+        date: dateFns.parse(
+          `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")} ${
+            child.querySelector(".article__time")?.textContent.trim() || ""
+          }`.trim(),
+          "yyyy-MM-dd HH:mm",
+          new Date(
+            new Date().toLocaleString("en-US", {
+              timeZone: "Europe/Kiev",
+              timeZoneName: "short",
+            })
+          )
+        ),
         custom_elements: [].concat([{ "tgspace:important": important }]),
       });
     }

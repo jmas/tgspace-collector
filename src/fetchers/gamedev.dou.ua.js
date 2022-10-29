@@ -17,13 +17,23 @@ module.exports = async (target, { getDomByUrl, dateFns }) => {
     const _date = dateFns.parse(
       `${day} ${month.slice(0, 4)}.`,
       "d LLL",
-      new Date(),
+      new Date(
+        new Date().toLocaleString("en-US", {
+          timeZone: "Europe/Kiev",
+          timeZoneName: "short",
+        })
+      ),
       { locale: uk }
     );
     const _time = dateFns.parse(
       `${time.trim().padStart(5, "0")}`,
       "HH:mm",
-      new Date(),
+      new Date(
+        new Date().toLocaleString("en-US", {
+          timeZone: "Europe/Kiev",
+          timeZoneName: "short",
+        })
+      ),
       {
         locale: uk,
       }

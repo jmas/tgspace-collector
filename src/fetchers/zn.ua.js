@@ -23,8 +23,16 @@ module.exports = async (target, { getDomByUrl, dateFns, URL }) => {
       items.push({
         title,
         url: `${baseUrl}${anchor.href}`,
-        date: dateFns.format(new Date(), "yyyy-MM-dd"),
-        time: time.trim(),
+        date: dateFns.parse(
+          `${dateFns.format(new Date(), "yyyy-MM-dd")} ${time.trim()}`,
+          "yyyy-MM-dd HH:mm",
+          new Date(
+            new Date().toLocaleString("en-US", {
+              timeZone: "Europe/Kiev",
+              timeZoneName: "short",
+            })
+          )
+        ),
         custom_elements: [].concat([{ "tgspace:important": important }]),
       });
     }

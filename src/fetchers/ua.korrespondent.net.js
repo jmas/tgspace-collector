@@ -19,10 +19,24 @@ module.exports = async (target, { getDomByUrl, dateFns }) => {
     items.push({
       title,
       url: anchor.href,
-      date: `${dateFns.format(
-        new Date(),
-        "yyyy-MM-dd"
-      )} ${time.textContent.trim()}`,
+      date: dateFns.parse(
+        `${dateFns.format(
+          new Date(
+            new Date().toLocaleString("en-US", {
+              timeZone: "Europe/Kiev",
+              timeZoneName: "short",
+            })
+          ),
+          "yyyy-MM-dd"
+        )} ${time.textContent.trim()}`,
+        "yyyy-MM-dd HH:mm",
+        new Date(
+          new Date().toLocaleString("en-US", {
+            timeZone: "Europe/Kiev",
+            timeZoneName: "short",
+          })
+        )
+      ),
       custom_elements: [].concat([{ "tgspace:important": important }]),
     });
   });
