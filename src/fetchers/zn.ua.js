@@ -25,9 +25,7 @@ module.exports = async (target, { getDomByUrl, dateFns, URL }) => {
         url: `${baseUrl}${anchor.href}`,
         date: dateFns.format(new Date(), "yyyy-MM-dd"),
         time: time.trim(),
-        custom_elements: [].concat(
-          important ? [{ "tgspace:important": true }] : []
-        ),
+        custom_elements: [].concat([{ "tgspace:important": important }]),
       });
     }
   });

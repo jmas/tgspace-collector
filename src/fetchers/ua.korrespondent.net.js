@@ -23,9 +23,7 @@ module.exports = async (target, { getDomByUrl, dateFns }) => {
         new Date(),
         "yyyy-MM-dd"
       )} ${time.textContent.trim()}`,
-      custom_elements: [].concat(
-        important ? [{ "tgspace:important": true }] : []
-      ),
+      custom_elements: [].concat([{ "tgspace:important": important }]),
     });
   });
 

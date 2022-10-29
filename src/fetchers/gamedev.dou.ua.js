@@ -36,6 +36,7 @@ module.exports = async (target, { getDomByUrl, dateFns }) => {
         _time,
         "HH:mm"
       )}`,
+      custom_elements: [].concat([{ "tgspace:important": false }]),
     });
   });
 

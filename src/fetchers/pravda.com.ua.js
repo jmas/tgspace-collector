@@ -42,9 +42,7 @@ module.exports = async (
         date: `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")} ${
           child.querySelector(".article_time")?.textContent.trim() || ""
         }`,
-        custom_elements: [].concat(
-          important ? [{ "tgspace:important": true }] : []
-        ),
+        custom_elements: [].concat([{ "tgspace:important": important }]),
       });
     }
   });

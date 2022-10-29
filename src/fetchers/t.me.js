@@ -83,9 +83,11 @@ module.exports = async (target, { getDomByUrl }) => {
       title,
       description,
       enclosure,
-      custom_elements: [].concat(
-        images.map((image) => ({ "tgspace:image": unwrapImage(image) }))
-      ),
+      custom_elements: []
+        .concat([{ "tgspace:important": false }])
+        .concat(
+          images.map((image) => ({ "tgspace:image": unwrapImage(image) }))
+        ),
     };
   });
 
