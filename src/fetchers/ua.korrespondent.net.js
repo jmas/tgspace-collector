@@ -17,14 +17,16 @@ module.exports = async (target, { getDomByUrl, dateFns, changeTimeZone }) => {
     const important = article.classList.contains("text_bold");
 
     const url = anchor.href;
-    const date = dateFns.parse(
-      `${dateFns.format(
-        changeTimeZone(new Date(), "Europe/Kiev"),
-        "yyyy-MM-dd"
-      )} ${time.textContent.trim()}`,
-      "yyyy-MM-dd HH:mm",
-      changeTimeZone(new Date(), "Europe/Kiev")
-    );
+    const date = dateFns
+      .parse(
+        `${dateFns.format(
+          changeTimeZone(new Date(), "Europe/Kiev"),
+          "yyyy-MM-dd"
+        )} ${time.textContent.trim()}`,
+        "yyyy-MM-dd HH:mm",
+        changeTimeZone(new Date(), "Europe/Kiev")
+      )
+      .toUTCString();
     const custom_elements = [].concat([{ "tgspace:important": important }]);
 
     items.push({

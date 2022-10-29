@@ -24,11 +24,13 @@ module.exports = async (
 
     if (time) {
       const url = `${baseUrl}${anchor.href}`;
-      const date = dateFns.parse(
-        `${dateFns.format(new Date(), "yyyy-MM-dd")} ${time.trim()}`,
-        "yyyy-MM-dd HH:mm",
-        changeTimeZone(new Date(), "Europe/Kiev")
-      );
+      const date = dateFns
+        .parse(
+          `${dateFns.format(new Date(), "yyyy-MM-dd")} ${time.trim()}`,
+          "yyyy-MM-dd HH:mm",
+          changeTimeZone(new Date(), "Europe/Kiev")
+        )
+        .toUTCString();
       const custom_elements = [].concat([{ "tgspace:important": important }]);
 
       items.push({

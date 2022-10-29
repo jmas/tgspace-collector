@@ -30,14 +30,16 @@ module.exports = async (target, { getDomByUrl, dateFns, changeTimeZone }) => {
     );
 
     const url = `${anchor.href}`;
-    const date = dateFns.parse(
-      `${dateFns.format(_date, "yyyy-MM-dd")} ${dateFns.format(
-        _time,
-        "HH:mm"
-      )}`,
-      "yyyy-MM-dd HH:mm",
-      changeTimeZone(new Date(), "Europe/Kiev")
-    );
+    const date = dateFns
+      .parse(
+        `${dateFns.format(_date, "yyyy-MM-dd")} ${dateFns.format(
+          _time,
+          "HH:mm"
+        )}`,
+        "yyyy-MM-dd HH:mm",
+        changeTimeZone(new Date(), "Europe/Kiev")
+      )
+      .toUTCString();
     const custom_elements = [].concat([{ "tgspace:important": false }]);
 
     items.push({
