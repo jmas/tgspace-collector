@@ -35,6 +35,14 @@ const convEncoding = (data, from = "win1251", to = "utf8") => {
   return iconv.encode(iconv.decode(data, from), to).toString(encMap[to]);
 };
 
+const changeTimeZone = (date, timeZone) => {
+  return new Date(
+    date.toLocaleString("en-US", {
+      timeZone,
+    })
+  );
+};
+
 const cleanupTitle = (title) => {
   return title.replace(/\s\s+/g, " ");
 };
@@ -86,6 +94,7 @@ const tools = {
   getDomByUrl,
   convEncoding,
   cleanupTitle,
+  changeTimeZone,
   URL,
   axios,
   dateFns,
@@ -148,11 +157,7 @@ module.exports = async () => {
         title,
         generator: "TG Space",
         site_url: "https://tgspace.org",
-        pubDate: new Date(
-          new Date().toLocaleString("en-US", {
-            timeZone: "Europe/Kiev",
-          })
-        ),
+        pubDate: new Date(),
         custom_namespaces: {
           tgspace: `${baseUrl}/tgspace.dtd`,
         },
@@ -201,11 +206,7 @@ module.exports = async () => {
 
   const header = {
     title: "TG Space Feeds",
-    dateCreated: new Date(
-      new Date().toLocaleString("en-US", {
-        timeZone: "Europe/Kiev",
-      })
-    ),
+    dateCreated: new Date(),
     ownerName: "jmas",
   };
 

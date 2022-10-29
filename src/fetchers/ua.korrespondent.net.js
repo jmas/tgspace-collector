@@ -1,4 +1,4 @@
-module.exports = async (target, { getDomByUrl, dateFns }) => {
+module.exports = async (target, { getDomByUrl, dateFns, changeTimeZone }) => {
   const targetUrl = target.url;
   const { window } = await getDomByUrl(targetUrl);
 
@@ -19,21 +19,16 @@ module.exports = async (target, { getDomByUrl, dateFns }) => {
     items.push({
       title,
       url: anchor.href,
-      date: dateFns.parse(
-        `${dateFns.format(
-          new Date(
-            new Date().toLocaleString("en-US", {
-              timeZone: "Europe/Kiev",
-            })
-          ),
-          "yyyy-MM-dd"
-        )} ${time.textContent.trim()}`,
-        "yyyy-MM-dd HH:mm",
-        new Date(
-          new Date().toLocaleString("en-US", {
-            timeZone: "Europe/Kiev",
-          })
-        )
+      date: changeTimeZone(
+        dateFns.parse(
+          `${dateFns.format(
+            changeTimeZone(new Date(), "Europe/Kiev"),
+            "yyyy-MM-dd"
+          )} ${time.textContent.trim()}`,
+          "yyyy-MM-dd HH:mm",
+          changeTimeZone(new Date(), "Europe/Kiev")
+        ),
+        "Europe/Kiev"
       ),
       custom_elements: [].concat([{ "tgspace:important": important }]),
     });

@@ -1,4 +1,4 @@
-module.exports = async (target, { getDomByUrl, dateFns }) => {
+module.exports = async (target, { getDomByUrl, dateFns, changeTimeZone }) => {
   const targetUrl = target.url;
   const { window } = await getDomByUrl(targetUrl);
 
@@ -18,29 +18,17 @@ module.exports = async (target, { getDomByUrl, dateFns }) => {
         ? dateFns.parse(
             `${year}-${month}-${day}`,
             "yyyy-MM-dd",
-            new Date(
-              new Date().toLocaleString("en-US", {
-                timeZone: "Europe/Kiev",
-              })
-            )
+            changeTimeZone(new Date(), "Europe/Kiev")
           )
         : null;
-    let time = new Date(
-      new Date().toLocaleString("en-US", {
-        timeZone: "Europe/Kiev",
-      })
-    );
+    let time = changeTimeZone(new Date(), "Europe/Kiev");
     const important = anchor.classList.contains("item-title-bold");
 
     if (dateOrTime.match(/\d\d:\d\d/)) {
       time = dateFns.parse(
         dateOrTime.trim().padStart(5, "0"),
         "HH:mm",
-        new Date(
-          new Date().toLocaleString("en-US", {
-            timeZone: "Europe/Kiev",
-          })
-        )
+        changeTimeZone(new Date(), "Europe/Kiev")
       );
     }
 
@@ -48,10 +36,15 @@ module.exports = async (target, { getDomByUrl, dateFns }) => {
       items.push({
         title,
         url: `${anchor.href}`,
-        date: `${dateFns.format(date, "yyyy-MM-dd")} ${dateFns.format(
-          time,
-          "HH:mm"
-        )}`,
+        date: changeTimeZone(
+          new Date(
+            `${dateFns.format(date, "yyyy-MM-dd")} ${dateFns.format(
+              time,
+              "HH:mm"
+            )}`
+          ),
+          "Europe/Kiev"
+        ),
         custom_elements: [].concat([{ "tgspace:important": important }]),
       });
     }
