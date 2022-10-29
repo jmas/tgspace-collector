@@ -1,3 +1,2 @@
-<!DOCTYPE image [
 <!ELEMENT image (#PCDATA)>
-]>
+<!ELEMENT important (#PCDATA)>
