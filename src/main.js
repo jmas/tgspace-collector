@@ -7,10 +7,13 @@ const fs = require("fs");
 const path = require("path");
 const fetchers = require("./fetchers");
 const RSS = require("rss-generator");
+const opml = require("opml-generator");
 
 const { JSDOM } = jsdom;
 
 const targetDir = process.env.TARGET_DIR || "build";
+const baseUrl =
+  process.env.BASE_URL || "https://jmas.github.io/tgspace-collector";
 
 const getDomByHtml = (html) => {
   const virtualConsole = new jsdom.VirtualConsole();
@@ -103,6 +106,8 @@ module.exports = async () => {
     "https://t.me/s/kinoriumUA",
   ];
 
+  const outlines = [];
+
   for (let url of urls) {
     const hostname = URL.parse(url).hostname;
     const pathname = URL.parse(url).pathname;
@@ -146,8 +151,18 @@ module.exports = async () => {
         ttl,
       });
 
+      outlines.push({
+        text: "txt",
+        title,
+        type: "rss",
+        xmlUrl: `${baseUrl}/${targetDir}/${fetcherName}.xml`,
+        // htmlUrl: "https://example.com/",
+      });
+
       // Add items to feed
-      items.forEach((item) => feed.item(item));
+      items.forEach((item) => {
+        feed.item(item);
+      });
 
       console.log(`[${fetcherName}] Result count: ${items.length}`);
 
@@ -175,4 +190,18 @@ module.exports = async () => {
 
     console.log(`[${fetcherName}] End fetcher`);
   }
+
+  const header = {
+    title: "TG Space Feeds",
+    dateCreated: new Date(),
+    ownerName: "jmas",
+  };
+
+  fs.writeFileSync(
+    path.join(".", targetDir, `feeds.opml`),
+    opml(header, outlines),
+    {
+      encoding: "utf-8",
+    }
+  );
 };
