@@ -11,9 +11,9 @@ module.exports = async (target, { getDomByUrl, dateFns, changeTimeZone }) => {
 
   articles.forEach((article) => {
     const anchor = article.querySelector(".title a");
-    const date = article.querySelector(".date").textContent;
+    const dateEl = article.querySelector(".date").textContent;
     const title = anchor.textContent.trim();
-    const [day, month, time] = date.split(" ");
+    const [day, month, time] = dateEl.split(" ");
     const _date = dateFns.parse(
       `${day} ${month.slice(0, 4)}.`,
       "d LLL",
@@ -29,17 +29,22 @@ module.exports = async (target, { getDomByUrl, dateFns, changeTimeZone }) => {
       }
     );
 
+    const url = `${anchor.href}`;
+    const date = dateFns.parse(
+      `${dateFns.format(_date, "yyyy-MM-dd")} ${dateFns.format(
+        _time,
+        "HH:mm"
+      )}`,
+      "yyyy-MM-dd HH:mm",
+      changeTimeZone(new Date(), "Europe/Kiev")
+    );
+    const custom_elements = [].concat([{ "tgspace:important": false }]);
+
     items.push({
       title,
-      url: `${anchor.href}`,
-      date: changeTimeZone(
-        `${dateFns.format(_date, "yyyy-MM-dd")} ${dateFns.format(
-          _time,
-          "HH:mm"
-        )}`,
-        "Europe/Kiev"
-      ),
-      custom_elements: [].concat([{ "tgspace:important": false }]),
+      url,
+      date,
+      custom_elements,
     });
   });
 

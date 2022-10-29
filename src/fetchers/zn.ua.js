@@ -23,18 +23,19 @@ module.exports = async (
     const important = anchor.classList.contains("bold");
 
     if (time) {
+      const url = `${baseUrl}${anchor.href}`;
+      const date = dateFns.parse(
+        `${dateFns.format(new Date(), "yyyy-MM-dd")} ${time.trim()}`,
+        "yyyy-MM-dd HH:mm",
+        changeTimeZone(new Date(), "Europe/Kiev")
+      );
+      const custom_elements = [].concat([{ "tgspace:important": important }]);
+
       items.push({
         title,
-        url: `${baseUrl}${anchor.href}`,
-        date: changeTimeZone(
-          dateFns.parse(
-            `${dateFns.format(new Date(), "yyyy-MM-dd")} ${time.trim()}`,
-            "yyyy-MM-dd HH:mm",
-            changeTimeZone(new Date(), "Europe/Kiev")
-          ),
-          "Europe/Kiev"
-        ),
-        custom_elements: [].concat([{ "tgspace:important": important }]),
+        url,
+        date,
+        custom_elements,
       });
     }
   });

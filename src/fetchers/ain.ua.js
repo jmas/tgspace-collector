@@ -13,7 +13,7 @@ module.exports = async (target, { getDomByUrl, dateFns, changeTimeZone }) => {
     const title = anchor.textContent.trim();
     const [, year, month, day] =
       anchor.href.match(/https:\/\/ain\.ua\/(\d+)\/(\d+)\/(\d+)\//) || [];
-    let date =
+    let _date =
       year && month && day
         ? dateFns.parse(
             `${year}-${month}-${day}`,
@@ -32,20 +32,23 @@ module.exports = async (target, { getDomByUrl, dateFns, changeTimeZone }) => {
       );
     }
 
-    if (date) {
+    if (_date) {
+      const url = `${anchor.href}`;
+      const date = dateFns.parse(
+        `${dateFns.format(_date, "yyyy-MM-dd")} ${dateFns.format(
+          time,
+          "HH:mm"
+        )}`,
+        "yyyy-MM-dd HH:mm",
+        changeTimeZone(new Date(), "Europe/Kiev")
+      );
+      const custom_elements = [].concat([{ "tgspace:important": important }]);
+
       items.push({
         title,
-        url: `${anchor.href}`,
-        date: changeTimeZone(
-          new Date(
-            `${dateFns.format(date, "yyyy-MM-dd")} ${dateFns.format(
-              time,
-              "HH:mm"
-            )}`
-          ),
-          "Europe/Kiev"
-        ),
-        custom_elements: [].concat([{ "tgspace:important": important }]),
+        url,
+        date,
+        custom_elements,
       });
     }
   });

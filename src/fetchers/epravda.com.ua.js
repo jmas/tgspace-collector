@@ -29,25 +29,26 @@ module.exports = async (
       const [, , year, month, day] = anchor.href
         .replace(/^https:\/\/.+\.(epravda|pravda|eurointegration)\.com\.ua/, "")
         .split("/");
+      const title = (
+        anchor.querySelector("[data-vr-headline]") || anchor
+      ).textContent.trim();
+      const url = anchor.href.startsWith("http")
+        ? anchor.href
+        : `${baseUrl}${anchor.href}`;
+      const date = dateFns.parse(
+        `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")} ${
+          child.querySelector(".article__time")?.textContent.trim() || ""
+        }`.trim(),
+        "yyyy-MM-dd HH:mm",
+        changeTimeZone(new Date(), "Europe/Kiev")
+      );
+      const custom_elements = [].concat([{ "tgspace:important": important }]);
 
       items.push({
-        title: (
-          anchor.querySelector("[data-vr-headline]") || anchor
-        ).textContent.trim(),
-        url: anchor.href.startsWith("http")
-          ? anchor.href
-          : `${baseUrl}${anchor.href}`,
-        date: changeTimeZone(
-          dateFns.parse(
-            `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")} ${
-              child.querySelector(".article__time")?.textContent.trim() || ""
-            }`.trim(),
-            "yyyy-MM-dd HH:mm",
-            changeTimeZone(new Date(), "Europe/Kiev")
-          ),
-          "Europe/Kiev"
-        ),
-        custom_elements: [].concat([{ "tgspace:important": important }]),
+        title,
+        url,
+        date,
+        custom_elements,
       });
     }
   });

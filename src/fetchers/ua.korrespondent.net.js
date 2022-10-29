@@ -16,21 +16,22 @@ module.exports = async (target, { getDomByUrl, dateFns, changeTimeZone }) => {
     const title = anchor.textContent.trim();
     const important = article.classList.contains("text_bold");
 
+    const url = anchor.href;
+    const date = dateFns.parse(
+      `${dateFns.format(
+        changeTimeZone(new Date(), "Europe/Kiev"),
+        "yyyy-MM-dd"
+      )} ${time.textContent.trim()}`,
+      "yyyy-MM-dd HH:mm",
+      changeTimeZone(new Date(), "Europe/Kiev")
+    );
+    const custom_elements = [].concat([{ "tgspace:important": important }]);
+
     items.push({
       title,
-      url: anchor.href,
-      date: changeTimeZone(
-        dateFns.parse(
-          `${dateFns.format(
-            changeTimeZone(new Date(), "Europe/Kiev"),
-            "yyyy-MM-dd"
-          )} ${time.textContent.trim()}`,
-          "yyyy-MM-dd HH:mm",
-          changeTimeZone(new Date(), "Europe/Kiev")
-        ),
-        "Europe/Kiev"
-      ),
-      custom_elements: [].concat([{ "tgspace:important": important }]),
+      url,
+      date,
+      custom_elements,
     });
   });
 
