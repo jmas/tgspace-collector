@@ -152,7 +152,7 @@ module.exports = async () => {
       });
 
       outlines.push({
-        text: "txt",
+        text: title,
         title,
         type: "rss",
         xmlUrl: `${baseUrl}/${targetDir}/${fetcherName}.xml`,
