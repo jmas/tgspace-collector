@@ -1,4 +1,4 @@
-module.exports = async (target, { getDomByUrl, dateFns, changeTimeZone }) => {
+module.exports = async (target, { getDomByUrl, dateFns, zonedTimeToUtc }) => {
   const targetUrl = target.url;
   const { window } = await getDomByUrl(targetUrl);
 
@@ -15,35 +15,32 @@ module.exports = async (target, { getDomByUrl, dateFns, changeTimeZone }) => {
       anchor.href.match(/https:\/\/ain\.ua\/(\d+)\/(\d+)\/(\d+)\//) || [];
     let _date =
       year && month && day
-        ? dateFns.parse(
-            `${year}-${month}-${day}`,
-            "yyyy-MM-dd",
-            changeTimeZone(new Date(), "Europe/Kiev")
-          )
+        ? dateFns.parse(`${year}-${month}-${day}`, "yyyy-MM-dd", new Date())
         : null;
-    let time = changeTimeZone(new Date(), "Europe/Kiev");
+    let time = null;
     const important = anchor.classList.contains("item-title-bold");
 
     if (dateOrTime.match(/\d\d:\d\d/)) {
       time = dateFns.parse(
         dateOrTime.trim().padStart(5, "0"),
         "HH:mm",
-        changeTimeZone(new Date(), "Europe/Kiev")
+        new Date()
       );
     }
 
-    if (_date) {
+    if (_date && time) {
       const url = `${anchor.href}`;
-      const date = dateFns
-        .parse(
+      const date = zonedTimeToUtc(
+        dateFns.parse(
           `${dateFns.format(_date, "yyyy-MM-dd")} ${dateFns.format(
             time,
             "HH:mm"
           )}`,
           "yyyy-MM-dd HH:mm",
-          changeTimeZone(new Date(), "Europe/Kiev")
-        )
-        .toUTCString();
+          new Date()
+        ),
+        "Europe/Kiev"
+      );
       const custom_elements = [].concat([{ "tgspace:important": important }]);
 
       items.push({

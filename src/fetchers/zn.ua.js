@@ -1,6 +1,6 @@
 module.exports = async (
   target,
-  { getDomByUrl, dateFns, URL, changeTimeZone }
+  { getDomByUrl, dateFns, URL, zonedTimeToUtc }
 ) => {
   const targetUrl = target.url;
   const { window } = await getDomByUrl(targetUrl);
@@ -24,13 +24,14 @@ module.exports = async (
 
     if (time) {
       const url = `${baseUrl}${anchor.href}`;
-      const date = dateFns
-        .parse(
+      const date = zonedTimeToUtc(
+        dateFns.parse(
           `${dateFns.format(new Date(), "yyyy-MM-dd")} ${time.trim()}`,
           "yyyy-MM-dd HH:mm",
-          changeTimeZone(new Date(), "Europe/Kiev")
-        )
-        .toUTCString();
+          new Date()
+        ),
+        "Europe/Kiev"
+      );
       const custom_elements = [].concat([{ "tgspace:important": important }]);
 
       items.push({

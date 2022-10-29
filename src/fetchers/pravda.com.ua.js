@@ -1,6 +1,6 @@
 module.exports = async (
   target,
-  { getDomByHtml, getHtmlByUrl, convEncoding, URL, dateFns, changeTimeZone }
+  { getDomByHtml, getHtmlByUrl, convEncoding, URL, dateFns, zonedTimeToUtc }
 ) => {
   const targetUrl = target.url;
 
@@ -38,15 +38,16 @@ module.exports = async (
       const url = anchor.href.startsWith("http")
         ? anchor.href
         : `${baseUrl}${anchor.href}`;
-      const date = dateFns
-        .parse(
+      const date = zonedTimeToUtc(
+        dateFns.parse(
           `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")} ${
             child.querySelector(".article_time")?.textContent.trim() || ""
           }`,
           "yyyy-MM-dd HH:mm",
-          changeTimeZone(new Date(), "Europe/Kiev")
-        )
-        .toUTCString();
+          new Date()
+        ),
+        "Europe/Kiev"
+      );
       const custom_elements = [].concat([{ "tgspace:important": important }]);
 
       items.push({

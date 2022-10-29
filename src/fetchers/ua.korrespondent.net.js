@@ -1,4 +1,4 @@
-module.exports = async (target, { getDomByUrl, dateFns, changeTimeZone }) => {
+module.exports = async (target, { getDomByUrl, dateFns, zonedTimeToUtc }) => {
   const targetUrl = target.url;
   const { window } = await getDomByUrl(targetUrl);
 
@@ -17,16 +17,17 @@ module.exports = async (target, { getDomByUrl, dateFns, changeTimeZone }) => {
     const important = article.classList.contains("text_bold");
 
     const url = anchor.href;
-    const date = dateFns
-      .parse(
+    const date = zonedTimeToUtc(
+      dateFns.parse(
         `${dateFns.format(
-          changeTimeZone(new Date(), "Europe/Kiev"),
+          new Date(),
           "yyyy-MM-dd"
         )} ${time.textContent.trim()}`,
         "yyyy-MM-dd HH:mm",
-        changeTimeZone(new Date(), "Europe/Kiev")
-      )
-      .toUTCString();
+        new Date()
+      ),
+      "Europe/Kiev"
+    );
     const custom_elements = [].concat([{ "tgspace:important": important }]);
 
     items.push({

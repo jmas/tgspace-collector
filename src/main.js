@@ -8,6 +8,7 @@ const path = require("path");
 const fetchers = require("./fetchers");
 const RSS = require("rss-generator");
 const opml = require("opml-generator");
+const { zonedTimeToUtc, utcToZonedTime } = require("date-fns-tz");
 
 const { JSDOM } = jsdom;
 
@@ -94,7 +95,8 @@ const tools = {
   getDomByUrl,
   convEncoding,
   cleanupTitle,
-  changeTimeZone,
+  zonedTimeToUtc,
+  utcToZonedTime,
   URL,
   axios,
   dateFns,

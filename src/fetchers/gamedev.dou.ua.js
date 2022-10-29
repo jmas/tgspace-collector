@@ -1,6 +1,6 @@
 const uk = require("date-fns/locale/uk");
 
-module.exports = async (target, { getDomByUrl, dateFns, changeTimeZone }) => {
+module.exports = async (target, { getDomByUrl, dateFns, zonedTimeToUtc }) => {
   const targetUrl = target.url;
   const { window } = await getDomByUrl(targetUrl);
 
@@ -17,29 +17,30 @@ module.exports = async (target, { getDomByUrl, dateFns, changeTimeZone }) => {
     const _date = dateFns.parse(
       `${day} ${month.slice(0, 4)}.`,
       "d LLL",
-      changeTimeZone(new Date(), "Europe/Kiev"),
+      new Date(),
       { locale: uk }
     );
     const _time = dateFns.parse(
       `${time.trim().padStart(5, "0")}`,
       "HH:mm",
-      changeTimeZone(new Date(), "Europe/Kiev"),
+      new Date(),
       {
         locale: uk,
       }
     );
 
     const url = `${anchor.href}`;
-    const date = dateFns
-      .parse(
+    const date = zonedTimeToUtc(
+      dateFns.parse(
         `${dateFns.format(_date, "yyyy-MM-dd")} ${dateFns.format(
           _time,
           "HH:mm"
         )}`,
         "yyyy-MM-dd HH:mm",
-        changeTimeZone(new Date(), "Europe/Kiev")
-      )
-      .toUTCString();
+        new Date()
+      ),
+      "Europe/Kiev"
+    );
     const custom_elements = [].concat([{ "tgspace:important": false }]);
 
     items.push({
