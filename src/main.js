@@ -149,7 +149,7 @@ module.exports = async () => {
         site_url: "https://tgspace.org",
         pubDate: new Date(),
         custom_namespaces: {
-          tgspace: `${baseUrl}`,
+          tgspace: `${baseUrl}/tgspace.dtd`,
         },
         ttl,
       });
